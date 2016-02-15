@@ -2,7 +2,7 @@
 
 Alberto Cereser, 15 February 2016
 
-In this repository you can find the files I used to simulate a ToF 3DND experiment at beamline BL18, J-PARC, using [McStas](http://www.mcstas.org/). The BL18 setup is described by [`BL18_pxtal_BOTH.instr`](https://github.com/albusdemens/McStas_3DND/blob/master/BL18_pxtal_BOTH.instr); to optimize the simulation time, the simulation can be performed collecting data using only the near-field or the far-field detectors (relative instrument files: [`BL18_pxtal_MCP.instr`](https://github.com/albusdemens/McStas_3DND/blob/master/BL18_pxtal_MCP.instr) and [`BL18_pxtal_FF.instr`](https://github.com/albusdemens/McStas_3DND/blob/master/BL18_pxtal_FF.instr)). 
+In this repository you can find the files I used to simulate a ToF 3DND experiment at beamline BL18, J-PARC, using [McStas](http://www.mcstas.org/). The BL18 setup is described by [`BL18_pxtal_BOTH.instr`](https://github.com/albusdemens/McStas_3DND/blob/master/BL18_pxtal_BOTH.instr); to speed up the computational time, the simulation can be performed with only the near- or the far-field detectors mounted (relative instrument files: [`BL18_pxtal_MCP.instr`](https://github.com/albusdemens/McStas_3DND/blob/master/BL18_pxtal_MCP.instr) and [`BL18_pxtal_FF.instr`](https://github.com/albusdemens/McStas_3DND/blob/master/BL18_pxtal_FF.instr)). 
 
 The J-PARC source is described by [`source_BL18.txt`](https://github.com/albusdemens/McStas_3DND/blob/master/source_BL18.txt).
 
