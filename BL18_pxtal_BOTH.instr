@@ -189,7 +189,8 @@ INITIALIZE
 
     /*allocate memory for all orientation hkl_infos*/
     if( (poly_hkl_info=malloc(orts_table->rows*sizeof(struct hkl_info_struct)))==NULL ){
-        fprintf(stderr,"Error (%s): Memory allocation error for orts hkl_infos, aborting.\n",NAME_CURRENT_COMP);
+        fprintf(stderr,"Error (%s): Memory allocation error for orts hkl_infos,
+        aborting.\n",NAME_CURRENT_COMP);
         exit(-1);
     }
 
@@ -488,7 +489,8 @@ EXTEND
       iiz = floor((z + zd*0.5)*nz/zd);
       if (iiz==nz || iiz<0 || iix==nx || iix<0 || iiy==ny || iiy<0 ){
         /*Neutron is outside the crystal hull. This should never happen*/
-        fprintf(stderr,"Warning (%s): Neutron has unpxectedly left the crystal hull: (ix,iy,iz) = (%d %d %d) (x,y,z)=(%g %g %g). Terminating\n",
+        fprintf(stderr,"Warning (%s): Neutron has unpxectedly left the crystal
+        hull: (ix,iy,iz) = (%d %d %d) (x,y,z)=(%g %g %g). Terminating\n",
         NAME_CURRENT_COMP,iix,iiy,iiz,x,y,z);
         ABSORB;
       }
