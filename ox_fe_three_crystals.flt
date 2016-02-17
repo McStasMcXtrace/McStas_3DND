@@ -1,0 +1,50 @@
+COMPONENT crystal_layer0_mntpt = Arm()
+AT (0,0,0) RELATIVE crystal_origin
+
+COMPONENT crystal_voxel0=Single_crystal(
+mosaic=1e-3,delta_d_d=1e-3, 
+reflections=crystal_file,xwidth=0.005,yheight=0.005,zdepth=0.005, //original values from Erik: xwidth=0.03,yheight=0.03,zdepth=0.01
+ax=2.886000,ay=0,az=0,bx=0,by=0,bz=2.886000,cx=0,cy=-2.886000,cz=0 //the values are the ones for Fe
+)
+AT (0,0,0) RELATIVE crystal_origin
+
+//I took out the "jump" sections; to find them look at the flt file in the ISIS folder
+
+COMPONENT crystal_layer1_mntpt = Arm()
+AT (0,0,0) RELATIVE crystal_origin
+
+COMPONENT crystal_voxel1=COPY(crystal_voxel0)(
+ax=-0.5665,ay=-0.5208,az=-2.7815,bx=2.4412,by=-1.5247,bz=-0.2117,cx=1.4312,cy=2.3944,cz=-0.7398
+)
+//I rotated the vectors around the axis using Rotations.m
+//vectors rotated by (17 39 73)
+AT (0,0,0.002) RELATIVE crystal_origin
+EXTEND
+%{
+if (SCATTERED) xtal_scatter++;
+%}
+
+COMPONENT crystal_layer2_mntpt = Arm()
+AT (0,0,0) RELATIVE crystal_origin
+
+COMPONENT crystal_voxel2=COPY(crystal_voxel0)(
+ax=-2.8452, ay=-0.0252, az=-0.4830, bx=-0.1125,by=-2.7686,bz=0.8071,cx=0.4704,cy=-0.8145,cz=-2.7284)
+//vectors rotated by (5 63 22)
+AT (0,0,0.004) RELATIVE crystal_origin
+
+EXTEND
+%{
+if (SCATTERED) xtal_scatter++;
+%}
+
+COMPONENT crystal_end =Arm()
+AT(0,0,0) RELATIVE crystal_origin
+
+
+
+
+
+
+
+
+
