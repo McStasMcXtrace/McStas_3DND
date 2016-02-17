@@ -1,10 +1,11 @@
 # McStas_3DND
 
 Alberto Cereser, 15 February 2016
+Technical University of Denmark, alcer@fysik.dtu.dk
 
 ## Polycrystalline sample
 
-In this repository you can find the files I used to simulate a ToF 3DND experiment with a polycrystalline sample at beamline BL18, J-PARC, using [McStas](http://www.mcstas.org/). The BL18 setup is described by [`BL18_pxtal_BOTH.instr`](https://github.com/albusdemens/McStas_3DND/blob/master/BL18_pxtal_BOTH.instr); to speed up the computational time, the simulation can be performed with only the near- or the far-field detectors mounted (relative instrument files: [`BL18_pxtal_MCP.instr`](https://github.com/albusdemens/McStas_3DND/blob/master/BL18_pxtal_MCP.instr) and [`BL18_pxtal_FF.instr`](https://github.com/albusdemens/McStas_3DND/blob/master/BL18_pxtal_FF.instr)). The description of the far-field detectors is in a separate file, [`detector_arms.instr`](https://github.com/albusdemens/McStas_3DND/blob/master/detector_arms.instr).
+In this repository you can find the files I used to simulate a time-of-flight 3D Neutron Diffraction (ToF 3DND) experiment with a polycrystalline sample at beamline BL18, J-PARC, using [McStas](http://www.mcstas.org/). The BL18 setup is described by [`BL18_pxtal_BOTH.instr`](https://github.com/albusdemens/McStas_3DND/blob/master/BL18_pxtal_BOTH.instr); to speed up the computational time, the simulation can be performed with only the near- or the far-field detectors mounted (relative instrument files: [`BL18_pxtal_MCP.instr`](https://github.com/albusdemens/McStas_3DND/blob/master/BL18_pxtal_MCP.instr) and [`BL18_pxtal_FF.instr`](https://github.com/albusdemens/McStas_3DND/blob/master/BL18_pxtal_FF.instr)). The description of the far-field detectors is in a separate file, [`detector_arms.instr`](https://github.com/albusdemens/McStas_3DND/blob/master/detector_arms.instr).
 
 The J-PARC source is described by [`source_BL18.txt`](https://github.com/albusdemens/McStas_3DND/blob/master/source_BL18.txt).
 
