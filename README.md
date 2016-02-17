@@ -16,4 +16,4 @@ To save the output data using the same format of the detetcors at J-PARC, E. Knu
 
 ## Three single crystals
 
-The approach presented above, where a polycrystalline sample is used, was developed to cross-check the algorithms developed analysing data collected at BL18, J-PARC, using ToF 3DND. A simpler setup, with a sample consisting of three iron single crystals, was used for preliminary feasibility tests. Instr file: [`BL18_three_crystals.instr`](McStas_3DND/BL18_three_crystals.instr).
+The approach presented above, where a polycrystalline sample is used, was developed to cross-check the algorithms developed analysing data collected at BL18, J-PARC, using ToF 3DND. A simpler setup, with a sample consisting of three iron single crystals, was used for preliminary feasibility tests. Instr file: [`BL18_three_crystals.instr`](https://github.com/albusdemens/McStas_3DND/BL18_three_crystals.instr).
