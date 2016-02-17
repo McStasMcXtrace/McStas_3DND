@@ -1,8 +1,8 @@
 # McStas_3DND
 
-Alberto Cereser, 15 February 2016
+Alberto Cereser, alcer@fysik.dtu.dk
 
-Technical University of Denmark, alcer@fysik.dtu.dk
+Technical University of Denmark, 15 February 2016
 
 ## Polycrystalline sample
 
