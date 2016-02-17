@@ -1,6 +1,6 @@
 /*******************************************************************************
 *
-* Written by: A. Cereser and E. Knudsen 
+* Written by: A. Cereser and E. Knudsen
 * Based on code by K. Oikawa
 * Date: 12 September 2013
 *
@@ -13,7 +13,7 @@
 * %P
 * L_min (AA) lower edge of wavelength band to be emitted from the Source
 * L_max (AA) upper edge of wavelength band to be emitted from the Source
-* NX ( ) Number of voxels along X 
+* NX ( ) Number of voxels along X
 * NY ( ) Number of voxels along Y
 * NZ ( ) Number of voxels along Z
 * XW (m) Width of the polycrystal hull.
@@ -25,23 +25,24 @@
 * AX ( ) X-component of unit cell vector a
 * ...
 * CZ ( ) Z-component of unit cell vector c
-* samplename ( ) name of the sample to produce SENJU style filenames 
+* samplename ( ) name of the sample to produce SENJU style filenames
 * runnumber ( ) runnumber to produce SENJU style filenames
 *
 * These are some lines from the original J-parc simulation
 *	E_min=81.8049/lmax/lmax;
-*	E_max=81.8049/lmin/lmin; 
+*	E_max=81.8049/lmin/lmin;
 *	tof_min=dd*505.555*35.6*sin((TTT)/360*PI)-delt;
 *	tof_max=dd*505.555*35.6*sin((TTT)/360*PI)+delt;
 *	E_min=81.8049*(252.778*35.6/tof_max)*(252.778*35.6/tof_max);
 *	E_max=81.8049*(252.778*35.6/tof_min)*(252.778*35.6/tof_min);
 *
 **************************************************************************/
-DEFINE INSTRUMENT BL18_SENJU(L_min=0.4, L_max=4, NX=1, NY=1, NZ=1, XW=0.01, YH=0.01, ZD=0.01, 
-    string map_fn="default.map", string orts_fn="default.orts",string lau_fn="Fe.lau",
+DEFINE INSTRUMENT BL18_SENJU(L_min=0.4, L_max=4, NX=1, NY=1, NZ=1, XW=0.01, YH=0.01, ZD=0.01,
+    string map_fn="default.map_101x101_rectified",
+    string orts_fn="default.orts",string lau_fn="Fe.lau",
     AX = 2.886,AY = 0, AZ = 0.0, BX = 0.0, BY = 2.886, BZ = 0.0, CX = 0.0,CY = 0.0, CZ = 2.886,
     omega=0, string samplename="C0127", int runnumber=0,
-    int side=0 
+    int side=0
 )
 
 DECLARE
@@ -61,7 +62,7 @@ DECLARE
   double anx,any,anz;
   int xtal_scatter;
   char crystal_file[]="Al.lau"; //the christal files are in /usr/local/lib/mcstas-2.0/data
-    
+
   void compute_global_vector(char *s,double kx,double ky, double kz,double *gkx,double *gky, double *gkz, Rotation R){
     Rotation TT;
     rot_transpose(R, TT);
@@ -163,7 +164,7 @@ INITIALIZE
   wsht=3e-3;
 
   /*The section below has been added to work with the polycrystalline sample*/
-  
+
   /*These should come from analyzing the map file instead*/
   nx=NX;
   ny=NY;
@@ -174,7 +175,7 @@ INITIALIZE
   if (initd!=1){
     initd=1;
     mcinit();
-    
+
     int status;
     map_table=malloc(sizeof(t_Table));
     orts_table=malloc(sizeof(t_Table));
@@ -187,11 +188,11 @@ INITIALIZE
       fprintf(stderr,"Error (%s): Could not parse file \"%s\"\n",NAME_CURRENT_COMP,map_fn);
       exit(-1);
     }
-      
+
     ao=coords_set(MC_GETPAR2(SX,ax),MC_GETPAR2(SX,ay),MC_GETPAR2(SX,az));
     bo=coords_set(MC_GETPAR2(SX,bx),MC_GETPAR2(SX,by),MC_GETPAR2(SX,bz));
     co=coords_set(MC_GETPAR2(SX,cx),MC_GETPAR2(SX,cy),MC_GETPAR2(SX,cz));
-    
+
     /*allocate memory for all orientation hkl_infos*/
     if( (poly_hkl_info=malloc(orts_table->rows*sizeof(struct hkl_info_struct)))==NULL ){
         fprintf(stderr,"Error (%s): Memory allocation error for orts hkl_infos, aborting.\n",NAME_CURRENT_COMP);
@@ -205,7 +206,7 @@ INITIALIZE
     double SC_mosaic_b=MC_GETPAR2(SX,mosaic_b);
     double SC_mosaic_c=MC_GETPAR2(SX,mosaic_c);
     double *SC_mosaic_ABin=NULL;
-    
+
     /*loop over all orientations and set up info-lists for each one.*/
     int i;
     for (i=0;i<orts_table->rows;i++){
@@ -221,9 +222,9 @@ INITIALIZE
       b=rot_apply(U,bo);
       c=rot_apply(U,co);
       /*set the crystal parameters to the rotated ones*/
-      coords_get(a,&(poly_hkl_info[i].m_ax), &(poly_hkl_info[i].m_ay),&(poly_hkl_info[i].m_az));     
-      coords_get(b,&(poly_hkl_info[i].m_bx), &(poly_hkl_info[i].m_by),&(poly_hkl_info[i].m_bz));     
-      coords_get(c,&(poly_hkl_info[i].m_cx), &(poly_hkl_info[i].m_cy),&(poly_hkl_info[i].m_cz));     
+      coords_get(a,&(poly_hkl_info[i].m_ax), &(poly_hkl_info[i].m_ay),&(poly_hkl_info[i].m_az));
+      coords_get(b,&(poly_hkl_info[i].m_bx), &(poly_hkl_info[i].m_by),&(poly_hkl_info[i].m_bz));
+      coords_get(c,&(poly_hkl_info[i].m_cx), &(poly_hkl_info[i].m_cy),&(poly_hkl_info[i].m_cz));
 
       /*call read_hkl_list function*/
       if (!read_hkl_data(laufn, &(poly_hkl_info[i]), SC_mosaic, SC_mosaic_a, SC_mosaic_b, SC_mosaic_c, SC_mosaic_ABin))
@@ -246,7 +247,7 @@ INITIALIZE
   }else{
     /*this block gets done before component initialization*/
     /*set up detector filenames*/
-    
+
     int j;
     for (j=1;j<=40;j++){
       sprintf(det_fn[j],"%s_%06d_%03d",samplename,runnumber,j);
@@ -254,7 +255,7 @@ INITIALIZE
         printf("detector filenames:\n%s\n .\n .\n .\n",det_fn[j]);
       }else if(j==40){
         printf("%s\n",det_fn[j]);
-      }  
+      }
     }
 
     /*position SENJU far field detectors according to calibration*/
@@ -282,7 +283,7 @@ COMPONENT mod = SNS_source(
   filename="source_BL18.txt",
   xwidth=0.1, yheight=0.1,
   dist = 15.19,
-  focus_xw = 0.041, focus_yh = 0.041, 
+  focus_xw = 0.041, focus_yh = 0.041,
   Emax=pow((2*M_PI/L_min)*K2V,2.0)*VS2E, Emin=pow((2*M_PI/L_max)*K2V,2.0)*VS2E      //lambda in Å; E probably in meV
 ) AT (0,0,0) RELATIVE a1
 
@@ -305,121 +306,121 @@ COMPONENT slt_out = Slit(
 	AT (0, 0, 15.140) RELATIVE a1
 
 COMPONENT guide1 = Guide(w1=0.03951,
-			 h1=0.03951, 
-			 w2=0.04146, 
-			 h2=0.04146, 
+			 h1=0.03951,
+			 w2=0.04146,
+			 h2=0.04146,
 			 l=0.8-0.0000001, R0=0.99, Qc=0.0217, alpha=4,m=4.0,W=0.0015)
 			 AT (0, 0, 15.2) RELATIVE a1 ROTATED (0,0,0) RELATIVE a1
 
 COMPONENT guide2 = Guide(w1=0.04146,
-			 h1=0.04146, 
-			 w2=0.04347, 
-			 h2=0.04347, 
+			 h1=0.04146,
+			 w2=0.04347,
+			 h2=0.04347,
 			 l=1.0-0.0000001, R0=0.99, Qc=0.0217, alpha=3,m=3.2,W=0.001)
 			 AT (0, 0, 16.0) RELATIVE a1 ROTATED (0,0,0) RELATIVE a1
 
 COMPONENT guide3 = Guide(w1=0.04347,
-			 h1=0.04347, 
-			 w2=0.04507, 
-			 h2=0.04507, 
+			 h1=0.04347,
+			 w2=0.04507,
+			 h2=0.04507,
 			 l=1.0-0.0000001, R0=0.99, Qc=0.0217,  alpha=3,m=3.2,W=0.001)
 			 AT (0, 0, 17.0) RELATIVE a1 ROTATED (0,0,0) RELATIVE a1
 
 COMPONENT guide4 = Guide(w1=0.04507,
-			 h1=0.04507, 
-			 w2=0.04630, 
-			 h2=0.04630, 
+			 h1=0.04507,
+			 w2=0.04630,
+			 h2=0.04630,
 			 l=1.0-0.0000001, R0=0.99, Qc=0.0217, alpha=3,m=3.2,W=0.001)
 			 AT (0, 0, 18.0) RELATIVE a1 ROTATED (0,0,0) RELATIVE a1
 
 COMPONENT guide5 = Guide(w1=0.04630,
-			 h1=0.04630, 
-			 w2=0.04718, 
-			 h2=0.04718, 
+			 h1=0.04630,
+			 w2=0.04718,
+			 h2=0.04718,
 			 l=1.0-0.0000001, R0=0.99, Qc=0.0217, alpha=3,m=3.2,W=0.001)
 			 AT (0, 0, 19.0) RELATIVE a1 ROTATED (0,0,0) RELATIVE a1
 
 COMPONENT guide6 = Guide(w1=0.04718,
-			 h1=0.04718, 
-			 w2=0.04774, 
-			 h2=0.04774, 
+			 h1=0.04718,
+			 w2=0.04774,
+			 h2=0.04774,
 			 l=1.0-0.0000001, R0=0.99, Qc=0.0217,  alpha=3,m=3.2,W=0.001)
 			 AT (0, 0, 20.0) RELATIVE a1 ROTATED (0,0,0) RELATIVE a1
 
 COMPONENT guide7 = Guide(w1=0.04774,
-			 h1=0.04774, 
-			 w2=0.04799, 
-			 h2=0.04799, 
+			 h1=0.04774,
+			 w2=0.04799,
+			 h2=0.04799,
 			 l=1.0-0.0000001, R0=0.99, Qc=0.0217,  alpha=3,m=3.2,W=0.001)
 			 AT (0, 0, 21.0) RELATIVE a1 ROTATED (0,0,0) RELATIVE a1
 
 COMPONENT guide8 = Guide(w1=0.04799,
-			 h1=0.04799, 
-			 w2=0.04799, 
-			 h2=0.04799, 
+			 h1=0.04799,
+			 w2=0.04799,
+			 h2=0.04799,
 			 l=0.6-0.0000001, R0=0.99, Qc=0.0217,  alpha=3,m=3.2,W=0.001)
 			 AT (0, 0, 22.0) RELATIVE a1 ROTATED (0,0,0) RELATIVE a1
 
 COMPONENT guide9 = Guide(w1=0.04799,
-			 h1=0.04799, 
-			 w2=0.04774, 
-			 h2=0.04774, 
+			 h1=0.04799,
+			 w2=0.04774,
+			 h2=0.04774,
 			 l=1.0-0.0000001, R0=0.99, Qc=0.0217,  alpha=3,m=3.2,W=0.001)
 			 AT (0, 0, 22.6) RELATIVE a1 ROTATED (0,0,0) RELATIVE a1
 
 COMPONENT guide10 = Guide(w1=0.04774,
-			 h1=0.04774, 
-			 w2=0.04718, 
-			 h2=0.04718, 
+			 h1=0.04774,
+			 w2=0.04718,
+			 h2=0.04718,
 			 l=1.0-0.0000001, R0=0.99, Qc=0.0217,  alpha=3,m=3.2,W=0.001)
 			 AT (0, 0, 23.6) RELATIVE a1 ROTATED (0,0,0) RELATIVE a1
 
 COMPONENT guide11 = Guide(w1=0.04718,
-			 h1=0.04718, 
-			 w2=0.04630, 
-			 h2=0.04630, 
+			 h1=0.04718,
+			 w2=0.04630,
+			 h2=0.04630,
 			 l=1.0-0.0000001, R0=0.99, Qc=0.0217,  alpha=3,m=3.2,W=0.001)
 			 AT (0, 0, 24.6) RELATIVE a1 ROTATED (0,0,0) RELATIVE a1
 
 COMPONENT guide12 = Guide(w1=0.04630,
-			 h1=0.04630, 
-			 w2=0.04507, 
-			 h2=0.04507, 
+			 h1=0.04630,
+			 w2=0.04507,
+			 h2=0.04507,
 			 l=1.0-0.0000001, R0=0.99, Qc=0.0217,  alpha=3,m=3.2,W=0.001)
 			 AT (0, 0, 25.6) RELATIVE a1 ROTATED (0,0,0) RELATIVE a1
 
 COMPONENT guide13 = Guide(w1=0.04507,
-			 h1=0.04507, 
-			 w2=0.04347, 
-			 h2=0.04347, 
+			 h1=0.04507,
+			 w2=0.04347,
+			 h2=0.04347,
 			 l=1.0-0.0000001, R0=0.99, Qc=0.0217,  alpha=3,m=3.2,W=0.001)
 			 AT (0, 0, 26.6) RELATIVE a1 ROTATED (0,0,0) RELATIVE a1
 
 COMPONENT guide14 = Guide(w1=0.04347,
-			 h1=0.04347, 
-			 w2=0.04146, 
-			 h2=0.04146, 
+			 h1=0.04347,
+			 w2=0.04146,
+			 h2=0.04146,
 			 l=1.0-0.0000001, R0=0.99, Qc=0.0217,  alpha=3,m=3.2,W=0.001)
 			 AT (0, 0, 27.6) RELATIVE a1 ROTATED (0,0,0) RELATIVE a1
 
 COMPONENT guide15 = Guide(w1=0.04146,
-			 h1=0.04146, 
-			 w2=0.03840, 
-			 h2=0.03840, 
+			 h1=0.04146,
+			 w2=0.03840,
+			 h2=0.03840,
 			 l=1.2-0.0000001, R0=0.99, Qc=0.0217, alpha=4,m=4.0,W=0.0015)
 			 AT (0, 0, 28.6) RELATIVE a1 ROTATED (0,0,0) RELATIVE a1
 
 COMPONENT guide16 = Guide(w1=0.03840,
-			 h1=0.03840, 
-			 w2=0.03519, 
-			 h2=0.03519, 
+			 h1=0.03840,
+			 w2=0.03519,
+			 h2=0.03519,
 			 l=1.0-0.0000001, R0=0.99, Qc=0.0217, alpha=4,m=4.0,W=0.0015)
 			 AT (0, 0, 29.8) RELATIVE a1 ROTATED (0,0,0) RELATIVE a1
 
 COMPONENT guide17 = Guide(w1=0.03519,
-			 h1=0.03519, 
-			 w2=0.03120, 
-			 h2=0.03120, 
+			 h1=0.03519,
+			 w2=0.03120,
+			 h2=0.03120,
 			 l=1.0-0.0000001, R0=0.99, Qc=0.0217, alpha=4,m=4.0,W=0.0015)
 			 AT (0, 0, 30.8) RELATIVE a1 ROTATED (0,0,0) RELATIVE a1
 
@@ -433,30 +434,30 @@ AT (0, 0, 31.845) RELATIVE a1 /*possibly should be 31.8624 given by present J-PA
 
 /*
 COMPONENT guidesp1 = Guide(w1=0.02987,
-			 h1=0.02987, 
-			 w2=0.02800, 
-			 h2=0.02800, 
+			 h1=0.02987,
+			 w2=0.02800,
+			 h2=0.02800,
 			 l=0.39-0.0000001, R0=0.99, Qc=0.0217, alpha=4.5,m=5,W=0.0015)
 			 AT (0, 0, 31.95) RELATIVE a1 ROTATED (0,0,0) RELATIVE a1
 
 COMPONENT guidesp2 = Guide(w1=0.02800,
-			 h1=0.02800, 
-			 w2=0.02590, 
-			 h2=0.02590, 
+			 h1=0.02800,
+			 w2=0.02590,
+			 h2=0.02590,
 			 l=0.39-0.0000001, R0=0.99, Qc=0.0217, alpha=4.5,m=5,W=0.0015)
 			 AT (0, 0, 32.34) RELATIVE a1 ROTATED (0,0,0) RELATIVE a1
 
 COMPONENT guidesp3 = Guide(w1=0.02590,
-			 h1=0.02590, 
-			 w2=0.02353, 
-			 h2=0.02353, 
+			 h1=0.02590,
+			 w2=0.02353,
+			 h2=0.02353,
 			 l=0.39-0.0000001, R0=0.99, Qc=0.0217, alpha=4.5,m=5,W=0.0015)
 			 AT (0, 0, 32.73) RELATIVE a1 ROTATED (0,0,0) RELATIVE a1
 
 COMPONENT guidesp4 = Guide(w1=0.02353,
-			 h1=0.02353, 
-			 w2=0.02079, 
-			 h2=0.02079, 
+			 h1=0.02353,
+			 w2=0.02079,
+			 h2=0.02079,
 			 l=0.39-0.0000001, R0=0.99, Qc=0.0217, alpha=4.5,m=5,W=0.0015)
 			 AT (0, 0, 33.12) RELATIVE a1 ROTATED (0,0,0) RELATIVE a1
 */
@@ -651,7 +652,7 @@ EXTEND
       /*avoid getting stuck on a boundary*/
       int count=0;
       if(iix == ix && iiy==iy && iiz==iz){
-        /*neutron is still in the same voxel as before - move a tiny amount to enter the next one.*/ 
+        /*neutron is still in the same voxel as before - move a tiny amount to enter the next one.*/
         //fprintf(stderr,"I am stuck...hopping a tiny amount to try to get unstuck.\n");
         //fprintf(stderr,"ix,iy,iz= %d %d %d nid=%ld\n",ix,iy,iz,nid);
         PROP_DT(DBL_EPSILON*10.0);
@@ -671,7 +672,7 @@ EXTEND
       /*inject the right hkl_info struct. The old neutron ki gets carried over to allow
        * skipping the orientation search.*/
       /*orientation index is in the 4th column of map_table. -1 since array is zero-indexed.*/
-      
+
       oidx=Table_Index(*map_table,ix*(ny*nz)+iy*nz+iz,3)-1;
 /*      double kix_carry=MC_GETPAR(SX,hkl_info).kix;*/
 /*      double kiy_carry=MC_GETPAR(SX,hkl_info).kiy;*/
@@ -701,15 +702,15 @@ EXTEND
       /*we miss the compound crystal completely so flag that*/
       crystal_miss=1;
     }
-  }while(0);  
+  }while(0);
 %}
 JUMP sx_exit WHEN (crystal_miss)
 
 COMPONENT SX = Single_crystal(
-    reflections = lau_fn, 
+    reflections = lau_fn,
     xwidth = XW/(double)NX, yheight = YH/(double)NY,
     zdepth = ZD/(double)NZ, delta_d_d = 0.01, mosaic = 0.01,sigma_inc=0.4,sigma_abs=2.56,barns=1,
-    ax = AX, ay = AY, az = AZ, bx = BX, by = BY, bz = BZ, cx = CX,cy = CY, cz = CZ, 
+    ax = AX, ay = AY, az = AZ, bx = BX, by = BY, bz = BZ, cx = CX,cy = CY, cz = CZ,
     p_transmit = 0.9)
 WHEN (!sx_background) AT (0, 0, 0) RELATIVE sx_hull
 EXTEND
@@ -720,7 +721,7 @@ EXTEND
   do {
     if (hkl_info.type='t'){
       //printf("COHSCATTORT: %d\n",oidx);
-    }  
+    }
     if(SCATTERED) xtals++;
     int s;
     double t0,t1;
@@ -763,7 +764,7 @@ JUMP sx_hull WHEN (crystal_miss==0)
 COMPONENT psd_direct_beam0 = PSD_monitor(
       xwidth=XW,yheight=YH, nx=101, ny=101, filename="psd_direct_beam0",restore_neutron=1)
 AT(0,0,ZD/2.0+1e-6) RELATIVE psdsamp
-GROUP g0 
+GROUP g0
 
 COMPONENT psd_direct_beam_arm = Arm()
 AT(0,0,0) RELATIVE PREVIOUS

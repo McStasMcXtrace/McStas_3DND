@@ -1,4 +1,4 @@
-nose/***************************************************************************
+/***************************************************************************
 *
 * Written by: A. Cereser and E. Knudsen
 * Based on code by K. Oikawa
@@ -37,7 +37,7 @@ nose/***************************************************************************
 *
 **************************************************************************/
 DEFINE INSTRUMENT BL18_SENJU(L_min=0.4, L_max=4, NX=1, NY=1, NZ=1, XW=0.01,
-    YH=0.01, ZD=0.01, string map_fn="default.map",
+    YH=0.01, ZD=0.01, string map_fn="default.map_101x101_rectified",
     string orts_fn="default.orts",string lau_fn="Fe.lau",
     AX = 2.886,AY = 0, AZ = 0.0, BX = 0.0, BY = 2.886, BZ = 0.0, CX = 0.0,
     CY = 0.0, CZ = 2.886,omega=0, string samplename="C0127", int runnumber=0,
@@ -189,8 +189,7 @@ INITIALIZE
 
     /*allocate memory for all orientation hkl_infos*/
     if( (poly_hkl_info=malloc(orts_table->rows*sizeof(struct hkl_info_struct)))==NULL ){
-        fprintf(stderr,"Error (%s): Memory allocation error for orts hkl_infos,
-        aborting.\n",NAME_CURRENT_COMP);
+        fprintf(stderr,"Error (%s): Memory allocation error for orts hkl_infos, aborting.\n",NAME_CURRENT_COMP);
         exit(-1);
     }
 
@@ -489,8 +488,7 @@ EXTEND
       iiz = floor((z + zd*0.5)*nz/zd);
       if (iiz==nz || iiz<0 || iix==nx || iix<0 || iiy==ny || iiy<0 ){
         /*Neutron is outside the crystal hull. This should never happen*/
-        fprintf(stderr,"Warning (%s): Neutron has unpxectedly left the crystal
-        hull: (ix,iy,iz) = (%d %d %d) (x,y,z)=(%g %g %g). Terminating\n",
+        fprintf(stderr,"Warning (%s): Neutron has unpxectedly left the crystal hull: (ix,iy,iz) = (%d %d %d) (x,y,z)=(%g %g %g). Terminating\n",
         NAME_CURRENT_COMP,iix,iiy,iiz,x,y,z);
         ABSORB;
       }
@@ -637,6 +635,8 @@ EXTEND
 /******************/
 /* far field detectors. u = up, d = down */
 /****************/
+
+%include "detector_arms.instr"
 
 /* Here's the 4pi detector*/
 
