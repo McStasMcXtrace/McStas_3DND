@@ -12,7 +12,7 @@ The J-PARC source is described by [`source_BL18.txt`](https://github.com/albusde
 
 As a sample, we consider an Iron cylinder consisting of 20 regions with random orientation. [`default.map_101x101_rectified`](https://github.com/albusdemens/McStas_3DND/blob/master/default.map_101x101_rectified) is a voxellized map of the sample, with the voxel orientations defined by [`default.orts`](https://github.com/albusdemens/McStas_3DND/blob/master/default.orts). The reflections for Iron are listed in [`Fe.lau`](https://github.com/albusdemens/McStas_3DND/blob/master/Fe.lau), generated using [Crystallographica](http://www.oxcryo.com/cg/crystallographica/).
 
-To save the output data using the same format of the detetcors at J-PARC, E. Knudsen developed the new modules [`FITS_monitor_new.comp`](https://github.com/albusdemens/McStas_3DND/blob/master/FITS_monitor_new.comp) and [`HDB_monitor_new.comp`](https://github.com/albusdemens/McStas_3DND/blob/master/HDB_monitor_new.comp). 
+To save the output data using the same format of the detetcors at J-PARC, E. Knudsen developed the new modules [`FITS_monitor.comp`](https://github.com/albusdemens/McStas_3DND/blob/master/FITS_monitor.comp) and [`HDB_monitor.comp`](https://github.com/albusdemens/McStas_3DND/blob/master/HDB_monitor.comp). 
 
 ## Three single crystals
 
